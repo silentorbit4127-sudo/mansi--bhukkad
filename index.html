@@ -12,19 +12,20 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Tap highlight blue box hatane ke liye */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body, html {
             width: 100%;
             height: 100%;
-            height: 100dvh;
             background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             position: fixed;
+            top: 0;
+            left: 0;
             outline: none;
         }
 
@@ -36,7 +37,6 @@
             width: 100%;
             max-width: 480px;
             height: 100%;
-            height: 100dvh;
             background: #000;
             position: relative;
             overflow: hidden;
@@ -1067,7 +1067,6 @@
             animation: bounceCat 2s ease-in-out infinite alternate;
         }
 
-        /* PERFECTLY ALIGNED TAKATAK PACKET INSIDE CAT WRAPPER */
         .takatak-packet-wrapper {
             position: absolute;
             bottom: 33px;
@@ -1091,7 +1090,6 @@
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
 
-        /* CRACK LINE OVER PACKET */
         .packet-crack-svg {
             position: absolute;
             top: 0;
@@ -1524,9 +1522,11 @@
                                       " />
                     </path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
                 </svg>
-            </div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
-            <div class="blow-hint" id="blowHint">✨ Tap anywhere or blow to extinguish!</div>
-        </div> <!-- BALLOON POPPING SCENE -->
+            </div>
+            
+            <div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
+            <div class="blow-hint" id="blowHint">✨ Tap anywhere to extinguish the candles!</div>
+        </div><!-- BALLOON POPPING SCENE -->
         <div class="balloon-scene" id="balloonScene">
             <div class="balloon-header" id="balloonHeader">
                 <div class="balloon-title">Pop the balloons 🎈</div>
@@ -1692,14 +1692,11 @@
             <div class="ending-name">Mansi!</div>
             
             <div class="cat-image-wrapper" id="catWrapper">
-                <!-- Original Cat Image -->
                 <img src="image10.png" alt="Cute Cat" class="cat-img" id="catImg">
                 
-                <!-- Perfectly Aligned Takatak Packet Inside Cat Wrapper -->
                 <div class="takatak-packet-wrapper" id="takatakPacket" onclick="animatePacketZoomAndCrack()">
                     <div class="packet-hint-pulse" id="packetPulse"></div>
                     <img src="takatak.png" alt="Packet" class="takatak-packet-img" id="takatakImg">
-                    <!-- SVG Crack Effect -->
                     <svg class="packet-crack-svg" id="packetCrackSvg" viewBox="0 0 100 100">
                         <path id="crackPath" d="M 10 10 L 45 40 L 30 65 L 75 55 L 90 90" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -1717,13 +1714,11 @@
             <div class="door-prompt-text">Knock three times. That's the rule.</div>
 
             <div class="door-wrapper" id="doorWrapper" onclick="handleDoorKnock()">
-                <!-- Room / Content Inside Door -->
                 <div class="door-reveal-content">
                     <div class="reveal-msg-title">Come in, Mansi.</div>
                     <div class="reveal-msg-sub">9 rooms, and every one of them is about you.</div>
                 </div>
 
-                <!-- Door Gate Container -->
                 <div class="door-gate-container" id="doorGateContainer">
                     <img src="image11.png" alt="Door" class="door-bg-img" id="doorBgImg">
                     <div class="door-board-sign">
@@ -2051,6 +2046,7 @@
         let isPacketAnimating = false;
         let voiceStage = 0; 
         let recognition = null;
+        let isListeningActive = false;
 
         function animatePacketZoomAndCrack() {
             if (isPacketAnimating) return;
@@ -2115,7 +2111,7 @@
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 const statusText = document.getElementById('doorStatusText');
-                statusText.innerText = "Voice Recognition not supported on this browser. Tap door to open!";
+                statusText.innerText = "Voice Recognition not supported. Tap door to open!";
                 document.getElementById('doorWrapper').onclick = () => {
                     document.getElementById('doorWrapper').classList.add('open');
                     playCelebrationFanfare();
@@ -2124,50 +2120,58 @@
             }
 
             recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
+            recognition.continuous = true;       // Continuously listen so it doesn't shut off quickly
+            recognition.interimResults = true;    // Catch words as you speak them
             recognition.lang = 'hi-IN';
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    transcript += event.results[i][0].transcript;
+                }
+                transcript = transcript.toLowerCase().trim();
                 const statusText = document.getElementById('doorStatusText');
 
                 if (voiceStage === 1) {
                     if (transcript.includes("mansi") || transcript.includes("मानसी") || transcript.includes("me")) {
                         voiceStage = 2;
+                        isListeningActive = false;
+                        try { recognition.stop(); } catch(e){}
+
                         statusText.innerText = "🔊 Door: Main nahi manta! Apna favourite food batao...";
                         speakText("Main nahi manta! Apna favourite food batao...", () => {
                             statusText.innerText = "🎙️ Listening for food name... (Say 'Takatak')";
-                            try { recognition.start(); } catch(e){}
-                        });
-                    } else {
-                        statusText.innerText = `🔊 Door: "${transcript}"? Naah, who are you? Say "Mansi"!`;
-                        speakText("Who are you?", () => {
+                            isListeningActive = true;
                             try { recognition.start(); } catch(e){}
                         });
                     }
                 } else if (voiceStage === 2) {
                     if (transcript.includes("takatak") || transcript.includes("टकाटक") || transcript.includes("taka tak")) {
+                        isListeningActive = false;
+                        try { recognition.stop(); } catch(e){}
                         statusText.innerText = "✨ Verified! Opening the museum door...";
                         speakText("Welcome in Mansi!", () => {
                             document.getElementById('doorWrapper').classList.add('open');
                             playCelebrationFanfare();
-                        });
-                    } else {
-                        statusText.innerText = `🔊 Door: "${transcript}" wrong answer! Say "Takatak"!`;
-                        speakText("Wrong answer! Tell me your favourite food...", () => {
-                            try { recognition.start(); } catch(e){}
                         });
                     }
                 }
             };
 
             recognition.onerror = (err) => {
-                const statusText = document.getElementById('doorStatusText');
-                statusText.innerText = "🎙️ Mic listening... Speak now!";
-                setTimeout(() => {
-                    try { recognition.start(); } catch(e){}
-                }, 1000);
+                // Ignore no-speech errors so it can smoothly restart listening
+                if (err.error !== 'no-speech' && err.error !== 'aborted') {
+                    console.log("Speech recognition error:", err.error);
+                }
+            };
+
+            recognition.onend = () => {
+                // Automatically restart listening if we haven't succeeded yet
+                if (isListeningActive) {
+                    try {
+                        recognition.start();
+                    } catch(e) {}
+                }
             };
         }
 
@@ -2196,8 +2200,9 @@
                 statusText.innerText = "🔊 Door: Who are you?";
                 
                 speakText("Who are you?", () => {
-                    statusText.innerText = "🎙️ Listening... Say 'Main Mansi'!";
+                    statusText.innerText = "🎙️ Listening... Speak whenever you're ready!";
                     initVoiceRecognition();
+                    isListeningActive = true;
                     try { recognition.start(); } catch(e){}
                 });
             }
@@ -2753,40 +2758,6 @@
             const cakeScene = document.getElementById("cakeScene");
             cakeScene.style.pointerEvents = "auto";
             cakeScene.onclick = extinguishCandle;
-
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                .then(stream => {
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    const analyser = audioCtx.createAnalyser();
-                    const microphone = audioCtx.createMediaStreamSource(stream);
-                    microphone.connect(analyser);
-                    analyser.fftSize = 128;
-                    const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-                    function detectBlow() {
-                        if (candleExtinguished) {
-                            stream.getTracks().forEach(track => track.stop());
-                            return;
-                        }
-                        analyser.getByteFrequencyData(dataArray);
-                        let sum = 0;
-                        for(let i = 0; i < dataArray.length; i++) {
-                            sum += dataArray[i];
-                        }
-                        let average = sum / dataArray.length;
-
-                        if (average > 25) {
-                            extinguishCandle();
-                            stream.getTracks().forEach(track => track.stop());
-                            return;
-                        }
-                        requestAnimationFrame(detectBlow);
-                    }
-                    detectBlow();
-                })
-                .catch(() => {});
-            }
         }
 
         function transitionToCakeScene() {
@@ -3023,6 +2994,7 @@ Thank you for being you. Happy Birthday! ✨`;
                 clearInterval(infiniteFireworksInterval);
                 infiniteFireworksInterval = null;
             }
+            isListeningActive = false;
             if (recognition) {
                 try { recognition.abort(); } catch(e){}
             }
