@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Birthday Wish - Ultimate Experience</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
@@ -12,21 +12,31 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Tap highlight blue box hatane ke liye */
         }
 
         body, html {
             width: 100%;
             height: 100%;
+            height: 100dvh;
             background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: fixed;
+            outline: none;
+        }
+
+        button, a, input, [role="button"], div {
+            -webkit-tap-highlight-color: transparent;
         }
 
         .phone-frame {
             width: 100%;
+            max-width: 480px;
             height: 100%;
+            height: 100dvh;
             background: #000;
             position: relative;
             overflow: hidden;
@@ -54,6 +64,7 @@
             font-size: 0.85rem;
             color: #fff;
             cursor: pointer;
+            outline: none;
         }
 
         .preview-badge {
@@ -576,6 +587,7 @@
             margin-top: 10px;
             box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
             animation: popInReason 0.2s ease forwards;
+            outline: none;
         }
 
         /* MEMORY LANE SCENE */
@@ -635,9 +647,7 @@
         @keyframes bulbBlink {
             0% { opacity: 0.35; box-shadow: 0 0 3px #ffe66d; }
             100% { opacity: 1; box-shadow: 0 0 12px #ffe66d, 0 0 22px #ffe66d; }
-        }
-
-        .polaroid-slider {
+        }.polaroid-slider {
             display: flex;
             gap: 15px;
             overflow-x: auto;
@@ -724,6 +734,7 @@
             margin-top: 10px;
             box-shadow: 0 4px 18px rgba(244, 63, 94, 0.45);
             z-index: 95;
+            outline: none;
         }
 
         /* LETTER SCENE STYLES */
@@ -886,6 +897,7 @@
             transform: translateY(10px);
             pointer-events: none;
             z-index: 105;
+            outline: none;
         }
 
         /* VIDEO SCENE STYLES */
@@ -1265,6 +1277,7 @@
             transition: transform 0.2s;
             z-index: 135;
             position: relative;
+            outline: none;
         }
 
         .send-btn:active { transform: scale(0.96); }
@@ -1348,7 +1361,7 @@
 
         <div class="footer-info" id="footerInfo">
             <div class="day-label">it's officially your day</div>
-            <div class="name-label">Happy Birthday,mansi</div>
+            <div class="name-label">Happy Birthday, mansi</div>
             <div class="sub-label">and just like that, you're growing wonderful ✨</div>
             <div class="tap-continue">tap anywhere to continue ➔</div>
         </div>
@@ -1511,9 +1524,7 @@
                                       " />
                     </path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
                 </svg>
-            </div>
-            
-            <div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
+            </div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
             <div class="blow-hint" id="blowHint">✨ Tap anywhere or blow to extinguish!</div>
         </div> <!-- BALLOON POPPING SCENE -->
         <div class="balloon-scene" id="balloonScene">
@@ -2115,7 +2126,7 @@
             recognition = new SpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = false;
-            recognition.lang = 'hi-IN'; // Hindi + English support
+            recognition.lang = 'hi-IN';
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript.toLowerCase().trim();
@@ -2216,6 +2227,11 @@
             setupNeonButterflies();
         }
         initCanvas();
+
+        window.addEventListener('resize', () => {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        });
 
         function setupGroundFlowers() {
             groundFlowers = [];
@@ -2322,7 +2338,7 @@
             ctx.arc(fx, fy, gf.size * 0.4, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
-      }function drawRealisticNeonButterfly(ctx, b, time) {
+        }function drawRealisticNeonButterfly(ctx, b, time) {
             ctx.save();
             b.wingAngle += b.wingSpeed;
             let wingScaleX = Math.abs(Math.sin(b.wingAngle));
@@ -2683,7 +2699,7 @@
                 drawTreeAndHearts();
                 treeAnimationComplete = true;
             }}, "-=0.3");
-                }function triggerCakeSVGAnimations() {
+        }function triggerCakeSVGAnimations() {
             startHappyBirthdayMusic();
 
             const bizcocho1 = document.getElementById("bizcocho_1");
