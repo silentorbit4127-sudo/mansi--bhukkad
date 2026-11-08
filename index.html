@@ -16,14 +16,15 @@
         }
 
         body, html {
-            width: 100%;
+            width: 100vw;
+            height: 100vh;
             height: 100dvh;
             background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            position: relative;
+            position: fixed;
             top: 0;
             left: 0;
             outline: none;
@@ -34,9 +35,10 @@
         }
 
         .phone-frame {
-            width: 100%;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             max-width: 480px;
-            height: 100%;
             max-height: 100dvh;
             background: #000;
             position: relative;
@@ -323,10 +325,10 @@
             pointer-events: none;
         }
 
-        /* FOOTER INFO */
+        /* FOOTER INFO - LOCKED POSITION */
         .footer-info {
             position: absolute;
-            top: 85px;
+            top: 55px;
             left: 0;
             width: 100%;
             text-align: center;
@@ -2436,12 +2438,12 @@
             leaves = [];
             const colors = ['#ff477e', '#ff758c', '#ff5c8d', '#ffa6c1', '#ff85a1', '#ffb3c6', '#f72585', '#ff9ebb', '#e63946', '#ffb5a7'];
             const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2 - 40;
+            const centerY = canvas.height * 0.43; 
             const scale = 8.5;
 
             let step = 9; 
-            for (let px = centerX - 150; px <= centerX + 150; px += step) {
-                for (let py = centerY - 150; py <= centerY + 150; py += step) {
+            for (let px = centerX - 140; px <= centerX + 140; px += step) {
+                for (let py = centerY - 140; py <= centerY + 140; py += step) {
                     let jx = px + (Math.random() - 0.5) * 6;
                     let jy = py + (Math.random() - 0.5) * 6;
 
@@ -2703,7 +2705,7 @@
                 drawTreeAndHearts();
                 treeAnimationComplete = true;
             }}, "-=0.3");
-        }function triggerCakeSVGAnimations() {
+    }function triggerCakeSVGAnimations() {
             startHappyBirthdayMusic();
 
             const bizcocho1 = document.getElementById("bizcocho_1");
