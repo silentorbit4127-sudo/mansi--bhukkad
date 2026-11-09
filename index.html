@@ -1522,7 +1522,9 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 " />
 </path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
 </svg>
-</div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
+</div>
+
+<div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
 <div class="blow-hint" id="blowHint">✨ Tap anywhere to extinguish the candles!</div>
 </div><!-- BALLOON POPPING SCENE -->
 <div class="balloon-scene" id="balloonScene">
@@ -1537,9 +1539,7 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 <div class="balloon cyan" onclick="popBalloon(this, 3)"></div>
 <div class="balloon peach" onclick="popBalloon(this, 4)"></div>
 <div class="balloon red" onclick="popBalloon(this, 5)"></div>
-</div>
-
-<div class="reasons-box" id="reasonsBox">
+</div><div class="reasons-box" id="reasonsBox">
 <div class="reason-card" id="reason1" style="display:none;">
 <div class="reason-tag">REASON NO.1 💖</div>
 <div class="reason-text">You remember the little things I forget</div>
@@ -2439,18 +2439,20 @@ function generateHeartCanopy() {
   leaves = [];
   const colors = ['#ff477e', '#ff758c', '#ff5c8d', '#ffa6c1', '#ff85a1', '#ffb3c6', '#f72585', '#ff9ebb', '#e63946', '#ffb5a7'];
   const centerX = canvas.width / 2;
-  // दिल को अब डायनेमिकली स्क्रीन के सेंटर या कैनवास के हिसाब से बिल्कुल सही पोजीशन पर रखा गया है ताकि यह कभी ऊपर न भागे
-  const centerY = canvas.height / 2 - 40;
-  const scale = 8.5;
+  
+  const treeTotalHeight = Math.min(235, canvas.height * 0.36); // बिल्कुल बैलेंस्ड लंबाई और पोजीशन
+  const branchBaseY = (canvas.height - 15) - treeTotalHeight;
+  const centerY = branchBaseY - 110; 
+  const scale = 7.8; // बिल्कुल सही और सटीक साइज (न ज़्यादा बड़ा, न छोटा)
 
-  let step = 9;
+  let step = 8;
   for (let px = centerX - 150; px <= centerX + 150; px += step) {
     for (let py = centerY - 150; py <= centerY + 150; py += step) {
-      let jx = px + (Math.random() - 0.5) * 6;
-      let jy = py + (Math.random() - 0.5) * 6;
+      let jx = px + (Math.random() - 0.5) * 5;
+      let jy = py + (Math.random() - 0.5) * 5;
 
       if (isPointInsideHeartShape(jx, jy, centerX, centerY, scale)) {
-        let size = Math.random() * 5 + 15;
+        let size = Math.random() * 4 + 14;
         leaves.push({
           x: jx,
           y: jy,
@@ -2473,13 +2475,12 @@ function drawTreeAndHearts() {
 
   const startX = canvas.width / 2;
   const startY = canvas.height - 15;
-  // पेड़ के तने की ऊँचाई और ब्रांचेस को अब कैनवास की कुल हाइट के अनुपात (Proportion) से कैलकुलेट किया गया है
-  const treeTotalHeight = Math.min(210, canvas.height * 0.35);
+  const treeTotalHeight = Math.min(235, canvas.height * 0.36);
   const branchBaseY = startY - treeTotalHeight;
 
   if (growthState.trunk > 0) {
     let currentH = treeTotalHeight * growthState.trunk;
-    ctx.lineWidth = Math.max(4, canvas.width * 0.012);
+    ctx.lineWidth = Math.max(5, canvas.width * 0.015);
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(startX, startY - currentH);
@@ -2523,13 +2524,13 @@ function drawTreeAndHearts() {
   }
 
   const branchesData = [
-    { p: growthState.b1, bx: startX, by: branchBaseY, cx: startX - 25, cy: branchBaseY - 25, ex: startX - 45, ey: branchBaseY - 50, lw: 4 },
-    { p: growthState.b2, bx: startX, by: branchBaseY, cx: startX + 25, cy: branchBaseY - 25, ex: startX + 45, ey: branchBaseY - 50, lw: 4 },
-    { p: growthState.b3, bx: startX, by: branchBaseY - 20, cx: startX - 45, cy: branchBaseY - 45, ex: startX - 70, ey: branchBaseY - 75, lw: 3.5 },
-    { p: growthState.b4, bx: startX, by: branchBaseY - 20, cx: startX + 45, cy: branchBaseY - 45, ex: startX + 70, ey: branchBaseY - 75, lw: 3.5 },
-    { p: growthState.b5, bx: startX, by: branchBaseY - 30, cx: startX - 20, cy: branchBaseY - 60, ex: startX - 30, ey: branchBaseY - 100, lw: 3 },
-    { p: growthState.b6, bx: startX, by: branchBaseY - 30, cx: startX + 20, cy: branchBaseY - 60, ex: startX + 30, ey: branchBaseY - 100, lw: 3 },
-    { p: growthState.b7, bx: startX, by: branchBaseY - 35, cx: startX, cy: branchBaseY - 70, ex: startX, ey: branchBaseY - 115, lw: 3 }
+    { p: growthState.b1, bx: startX, by: branchBaseY, cx: startX - 25, cy: branchBaseY - 25, ex: startX - 45, ey: branchBaseY - 55, lw: 4.5 },
+    { p: growthState.b2, bx: startX, by: branchBaseY, cx: startX + 25, cy: branchBaseY - 25, ex: startX + 45, ey: branchBaseY - 55, lw: 4.5 },
+    { p: growthState.b3, bx: startX, by: branchBaseY - 20, cx: startX - 45, cy: branchBaseY - 45, ex: startX - 70, ey: branchBaseY - 80, lw: 4 },
+    { p: growthState.b4, bx: startX, by: branchBaseY - 20, cx: startX + 45, cy: branchBaseY - 45, ex: startX + 70, ey: branchBaseY - 80, lw: 4 },
+    { p: growthState.b5, bx: startX, by: branchBaseY - 35, cx: startX - 20, cy: branchBaseY - 65, ex: startX - 35, ey: branchBaseY - 110, lw: 3.5 },
+    { p: growthState.b6, bx: startX, by: branchBaseY - 35, cx: startX + 20, cy: branchBaseY - 65, ex: startX + 35, ey: branchBaseY - 110, lw: 3.5 },
+    { p: growthState.b7, bx: startX, by: branchBaseY - 45, cx: startX, cy: branchBaseY - 75, ex: startX, ey: branchBaseY - 125, lw: 3.5 }
   ];
 
   branchesData.forEach(b => {
@@ -2552,7 +2553,7 @@ function drawTreeAndHearts() {
     branchesData.forEach(b => {
       let angles = [-0.8, -0.4, 0, 0.4, 0.8];
       angles.forEach(angle => {
-        let stemLen = 18 * sp;
+        let stemLen = 22 * sp;
         ctx.beginPath();
         ctx.moveTo(b.ex, b.ey);
         ctx.lineTo(b.ex + Math.sin(angle) * stemLen * 1.5, b.ey - Math.cos(angle) * stemLen);
@@ -2576,8 +2577,10 @@ function drawTreeAndHearts() {
       if (fh.y < fh.targetY) {
         fh.opacity = Math.min(1, fh.opacity + 0.04);
       } else {
-        fh.y = canvas.height / 2 - 90 + (Math.random() - 0.5) * 30;
-        fh.x = canvas.width / 2 + (Math.random() - 0.5) * 140;
+        const treeTotalH = Math.min(235, canvas.height * 0.36);
+        const branchBaseY = (canvas.height - 15) - treeTotalH;
+        fh.y = branchBaseY - 110 + (Math.random() - 0.5) * 30;
+        fh.x = canvas.width / 2 + (Math.random() - 0.5) * 100;
         fh.opacity = 0;
       }
 
@@ -2598,10 +2601,11 @@ let isDragging = false;
 let startY = 0;
 let currentPull = 0;
 const maxPull = 60;
+let animationTriggered = false;
 
 bowContainer.addEventListener('pointerdown', (e) => {
   getAudioContext();
-  if (renderLoopActive) return;
+  if (renderLoopActive || animationTriggered) return;
   isDragging = true;
   startY = e.clientY;
   bowContainer.setPointerCapture(e.pointerId);
@@ -2620,7 +2624,8 @@ bowContainer.addEventListener('pointerup', (e) => {
   if (!isDragging) return;
   isDragging = false;
 
-  if (currentPull > 25) {
+  if (currentPull > 20) {
+    animationTriggered = true;
     startBirthdaySequence();
   } else {
     gsap.to(arrowGroup, { y: 0, duration: 0.3, ease: "elastic.out(1, 0.4)" });
@@ -2974,13 +2979,14 @@ function updateSliderDots() {
 function setupFallingHeartsData() {
   fallingHearts = [];
   const colors = ['#ff477e', '#ff758c', '#ffa6c1', '#f72585', '#ff9ebb'];
-  const startY = canvas.height - 15;
+  const treeTotalH = Math.min(235, canvas.height * 0.36);
+  const branchBaseY = (canvas.height - 15) - treeTotalH;
 
   for (let i = 0; i < 20; i++) {
     fallingHearts.push({
-      x: canvas.width / 2 + (Math.random() - 0.5) * 160,
-      y: canvas.height / 2 - 90 + (Math.random() - 0.5) * 60,
-      targetY: startY - 12 - Math.random() * 12,
+      x: canvas.width / 2 + (Math.random() - 0.5) * 100,
+      y: branchBaseY - 110 + (Math.random() - 0.5) * 30,
+      targetY: (canvas.height - 15) - 12 - Math.random() * 12,
       size: Math.random() * 4 + 11,
       speed: Math.random() * 0.7 + 0.4,
       wobbleSpeed: Math.random() * 0.04 + 0.02,
@@ -3019,6 +3025,7 @@ function resetApp() {
   knockCount = 0;
   isPacketAnimating = false;
   voiceStage = 0;
+  animationTriggered = false;
 
   if (animRequestId) cancelAnimationFrame(animRequestId);
   ctx.clearRect(0, 0, canvas.width, canvas.width);
