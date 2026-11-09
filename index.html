@@ -1522,7 +1522,7 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 " />
 </path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
 </svg>
-    </div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
+</div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
 <div class="blow-hint" id="blowHint">✨ Tap anywhere to extinguish the candles!</div>
 </div><!-- BALLOON POPPING SCENE -->
 <div class="balloon-scene" id="balloonScene">
@@ -1833,7 +1833,9 @@ function startHappyBirthdayMusic() {
     { f: 392.00, d: 0.3 }, { f: 392.00, d: 0.3 }, { f: 440.00, d: 0.6 }, { f: 392.00, d: 0.6 }, { f: 587.33, d: 0.6 }, { f: 523.25, d: 1.0 },
     { f: 392.00, d: 0.3 }, { f: 392.00, d: 0.3 }, { f: 783.99, d: 0.6 }, { f: 659.25, d: 0.6 }, { f: 523.25, d: 0.6 }, { f: 493.88, d: 0.6 }, { f: 440.00, d: 0.8 },
     { f: 698.46, d: 0.3 }, { f: 698.46, d: 0.3 }, { f: 659.25, d: 0.6 }, { f: 523.25, d: 0.6 }, { f: 587.33, d: 0.6 }, { f: 523.25, d: 1.2 }
-  ];let noteIdx = 0;
+  ];
+
+  let noteIdx = 0;
 
   function playNextNote() {
     if (!isBirthdayMusicPlaying) return;
@@ -1861,9 +1863,7 @@ function startHappyBirthdayMusic() {
   }
 
   playNextNote();
-}
-
-function stopBirthdayMusic() {
+}function stopBirthdayMusic() {
   isBirthdayMusicPlaying = false;
   if (musicInterval) clearTimeout(musicInterval);
 }
@@ -2232,6 +2232,8 @@ initCanvas();
 window.addEventListener('resize', () => {
   canvas.width = canvas.parentElement.clientWidth;
   canvas.height = canvas.parentElement.clientHeight;
+  setupGroundFlowers();
+  setupNeonButterflies();
   if(treeAnimationComplete) {
     generateHeartCanopy();
     drawTreeAndHearts();
@@ -2343,7 +2345,7 @@ function drawFlower(ctx, gf, time) {
   ctx.arc(fx, fy, gf.size * 0.4, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
-    }function drawRealisticNeonButterfly(ctx, b, time) {
+  }function drawRealisticNeonButterfly(ctx, b, time) {
   ctx.save();
   b.wingAngle += b.wingSpeed;
   let wingScaleX = Math.abs(Math.sin(b.wingAngle));
@@ -2437,6 +2439,7 @@ function generateHeartCanopy() {
   leaves = [];
   const colors = ['#ff477e', '#ff758c', '#ff5c8d', '#ffa6c1', '#ff85a1', '#ffb3c6', '#f72585', '#ff9ebb', '#e63946', '#ffb5a7'];
   const centerX = canvas.width / 2;
+  // दिल को अब डायनेमिकली स्क्रीन के सेंटर या कैनवास के हिसाब से बिल्कुल सही पोजीशन पर रखा गया है ताकि यह कभी ऊपर न भागे
   const centerY = canvas.height / 2 - 40;
   const scale = 8.5;
 
@@ -2470,11 +2473,13 @@ function drawTreeAndHearts() {
 
   const startX = canvas.width / 2;
   const startY = canvas.height - 15;
-  const branchBaseY = startY - 210;
+  // पेड़ के तने की ऊँचाई और ब्रांचेस को अब कैनवास की कुल हाइट के अनुपात (Proportion) से कैलकुलेट किया गया है
+  const treeTotalHeight = Math.min(210, canvas.height * 0.35);
+  const branchBaseY = startY - treeTotalHeight;
 
   if (growthState.trunk > 0) {
-    let currentH = (startY - branchBaseY) * growthState.trunk;
-    ctx.lineWidth = 5.5;
+    let currentH = treeTotalHeight * growthState.trunk;
+    ctx.lineWidth = Math.max(4, canvas.width * 0.012);
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(startX, startY - currentH);
@@ -2704,7 +2709,7 @@ function startBirthdaySequence() {
     drawTreeAndHearts();
     treeAnimationComplete = true;
   }}, "-=0.3");
-    }function triggerCakeSVGAnimations() {
+  }function triggerCakeSVGAnimations() {
   startHappyBirthdayMusic();
 
   const bizcocho1 = document.getElementById("bizcocho_1");
