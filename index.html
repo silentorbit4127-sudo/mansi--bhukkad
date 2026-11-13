@@ -1119,137 +1119,214 @@ button, a, input, [role="button"], div {
   100% { transform: scale(1.4) rotate(180deg); opacity: 0; }
 }
 
-/* FULL FRAME DOOR SCENE */
+/* FULL FRAME DOOR SCENE (VOICE INTERACTIVE) */
 .door-full-frame {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #0f2826;
+  background: radial-gradient(ellipse at 50% 42%,#155b52 0%,#0b3935 53%,#031d1c 100%);
   z-index: 200;
   opacity: 0;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 50px 20px;
-  perspective: 1000px;
+  justify-content: center;
+  padding: 20px;
   overflow: hidden;
   transform-origin: center center;
 }
 
-.door-prompt-text {
-  color: #d1d5db;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  text-align: center;
-  opacity: 0.9;
+.door-full-frame:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(115deg,transparent 0 5px,#ffffff04 6px 7px);
+  pointer-events:none;
 }
 
-.door-wrapper {
+.instruction {
+  position: absolute;
+  top: 8%;
+  font-size: clamp(11px,3vw,14px);
+  letter-spacing: .4px;
+  color: #f4e5c6;
+  text-shadow: 0 2px 5px #000;
+}
+
+.door-wrap {
   position: relative;
-  width: 280px;
-  height: 440px;
-  cursor: pointer;
-  perspective: 1200px;
-  margin-top: 10px;
+  width: min(70vw, 310px);
+  height: min(69svh, 570px);
+  min-height: 390px;
+  filter: drop-shadow(0 14px 15px #0009);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.door-reveal-content {
+/* Layered arched wooden surround */
+.arch-outer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0;
+  border-radius: 48% 48% 3px 3px / 18% 18% 3px 3px;
+  background: linear-gradient(90deg,#43251c,#a66a3c 7%,#573222 12%,#b17a48 50%,#4c2b20 90%,#9a6038);
+  padding: 7px;
+  box-shadow: 0 0 0 1px #d29a5d, 0 0 24px #000a;
+}
+
+.arch-middle {
   height: 100%;
-  background: radial-gradient(circle, #fffbe6 0%, #ffd166 100%);
-  border-radius: 20px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  text-align: center;
-  box-shadow: inset 0 0 40px rgba(180, 83, 9, 0.2);
-}
-
-.reveal-msg-title {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #3f2e1e;
-  margin-bottom: 12px;
-  font-family: 'Lobster', cursive;
-}
-
-.reveal-msg-sub {
-  font-size: 0.95rem;
-  color: #5c4033;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.door-gate-container {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
+  border-radius: 48% 48% 2px 2px / 18% 18% 2px 2px;
+  background: linear-gradient(90deg,#0a302d,#1c766a 12%,#075047 50%,#0a302d);
+  padding: 9px;
+  box-shadow: inset 0 0 0 2px #39877a, inset 0 0 18px #001c19;
+}
+
+.door {
   height: 100%;
+  width: 100%;
+  position: relative;
   transform-origin: left center;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 5;
   transform-style: preserve-3d;
+  transition: transform 2.1s cubic-bezier(.7,0,.2,1);
+  border-radius: 46% 46% 1px 1px / 17% 17% 1px 1px;
+  background: linear-gradient(90deg,#075047,#0b6258 23%,#07534b 75%,#03443e);
+  border: 2px solid #164a42;
+  box-shadow: inset 0 0 0 2px #24776a, inset 0 0 30px #002c27, 2px 0 8px #001b18;
 }
 
-.door-wrapper.open .door-gate-container {
-  transform: rotateY(-110deg);
-}
-
-.door-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));
-}
-
-.door-board-sign {
+.door:before {
+  content: "";
   position: absolute;
-  top: 32%;
+  inset: 10px 9px 9px;
+  border: 2px solid #06463f;
+  border-radius: 47% 47% 1px 1px / 17% 17% 1px 1px;
+  box-shadow: inset 0 0 0 1px #2b776a, 0 0 0 1px #0a3934;
+}
+
+.panel {
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  border: 2px solid #06453e;
+  border-radius: 3px;
+  box-shadow: inset 0 0 14px #002c28, 0 0 0 1px #17665b;
+}
+
+.panel.top { top: 36%; height: 20%; }
+.panel.bottom { bottom: 5%; height: 28%; }
+
+.sign {
+  position: absolute;
+  z-index: 3;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 57%;
+  padding: 9px 5px 8px;
+  background: linear-gradient(110deg,#f8f0dc,#e9dfc8);
+  color: #322a20;
+  text-align: center;
+  font: bold clamp(8px,2.2vw,10px)/1.25 Georgia,serif;
+  border-radius: 4px;
+  box-shadow: 0 3px 8px #0008, 0 0 0 1px #c8b99a;
+}
+
+.knob {
+  position: absolute;
+  z-index: 4;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: clamp(57px,17vw,76px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 5px solid #d9a63b;
+  background: radial-gradient(circle at 38% 30%,#ff68a7 0%,#ed3187 45%,#b91865 72%,#7d174e 74%);
+  box-shadow: 0 0 0 2px #f0ca66, 0 3px 8px #001d19, inset 0 0 8px #ffb4d4;
+  cursor: pointer;
+  animation: glow 2s infinite;
+}
+
+.knob:after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 2px solid #dcb84f;
+  border-radius: 50%;
+  opacity: .5;
+}
+
+@keyframes glow {
+  50% { box-shadow: 0 0 0 2px #f0ca66, 0 0 18px #f8c64c, inset 0 0 8px #ffb4d4; }
+}
+
+.knock {
+  animation: tap .22s 2;
+}
+
+@keyframes tap {
+  50% { transform: translate(-50%,-50%) scale(.88); }
+}
+
+.dots {
+  position: absolute;
+  bottom: -7%;
   left: 50%;
   transform: translateX(-50%);
-  background: #fffdf5;
-  border: 1px solid #d4af37;
-  padding: 8px 16px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #2c221e;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  pointer-events: none;
-  width: 65%;
-  line-height: 1.3;
+  display: flex;
+  gap: 8px;
 }
 
-.door-board-sign span {
-  font-size: 0.65rem;
-  font-weight: 400;
-  color: #666;
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #a78c48;
+  background: #163f39;
 }
 
-.door-bottom-status {
-  color: #fde047;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  min-height: 24px;
+.dot.active {
+  background: #f5c64b;
+  box-shadow: 0 0 8px #ffc94c;
+}
+
+.hint {
+  position: absolute;
+  bottom: 10%;
+  font: 12px Arial,sans-serif;
+  color: #e8d8b5;
+  text-shadow: 0 2px 5px #000;
   text-align: center;
   padding: 0 10px;
 }
+
+.door-full-frame.open .door {
+  transform: perspective(900px) rotateY(-105deg);
+}
+
+.welcome-door-msg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: #4d3020;
+  background: radial-gradient(ellipse at center,#fff1bd 0%,#f3c66c 32%,#a56a32 63%,#183c34 100%);
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.welcome-door-msg.show { opacity: 1; }
+.welcome-door-msg h1 { font-size: clamp(23px,6vw,30px); font-weight: normal; margin-bottom: 13px; }
+.welcome-door-msg p { font-size: 12px; line-height: 1.7; }
 
 .ending-subtitle {
   font-size: 0.85rem;
@@ -1359,7 +1436,7 @@ button, a, input, [role="button"], div {
 
 <div class="footer-info" id="footerInfo">
 <div class="day-label">it's officially your day</div>
-<div class="name-label">Happy Birthday, mansi</div>
+<div class="name-label">Happy Birthday, Neha</div>
 <div class="sub-label">and just like that, you're growing wonderful ✨</div>
 <div class="tap-continue">tap anywhere to continue ➔</div>
 </div>
@@ -1522,16 +1599,16 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 " />
 </path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
 </svg>
-</div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for mansiya bhukkad 😚</div>
+</div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for nehiya bhukkad 😚</div>
 <div class="blow-hint" id="blowHint">✨ Tap anywhere to extinguish the candles!</div>
-</div><!-- BALLOON POPPING SCENE -->
+</div>
+
+<!-- BALLOON POPPING SCENE -->
 <div class="balloon-scene" id="balloonScene">
 <div class="balloon-header" id="balloonHeader">
 <div class="balloon-title">Pop the balloons 🎈</div>
 <div class="balloon-subtitle">5 balloons. Each one holds a reason you're loved.<br>Pop them all 📍</div>
-</div>
-
-<div class="balloons-container" id="balloonsContainer">
+</div><div class="balloons-container" id="balloonsContainer">
 <div class="balloon pink" onclick="popBalloon(this, 1)"></div>
 <div class="balloon purple" onclick="popBalloon(this, 2)"></div>
 <div class="balloon cyan" onclick="popBalloon(this, 3)"></div>
@@ -1630,7 +1707,7 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 <!-- LETTER SCENE -->
 <div class="letter-scene" id="letterScene">
 <div class="letter-header" id="letterHeader">
-<div class="letter-title">One last thing, mansi bauni...</div>
+<div class="letter-title">One last thing, neha bauni...</div>
 <div class="letter-subtitle">Nikhil wrote you a letter.</div>
 </div>
 
@@ -1687,7 +1764,7 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 <!-- ENDING BIRTHDAY CARD SCENE -->
 <div class="ending-scene" id="endingScene">
 <div class="ending-title">HAPPY<br>BIRTHDAY</div>
-<div class="ending-name">Mansi!</div>
+<div class="ending-name">Neha!</div>
 
 <div class="cat-image-wrapper" id="catWrapper">
 <img src="image10.png" alt="Cute Cat" class="cat-img" id="catImg">
@@ -1703,29 +1780,28 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 
 <div class="ending-subtitle">Made with love, just for you — Nikhil 💛</div>
 
-<button class="send-btn" onclick="triggerManualFirecrackers()">Send It to Mansi 🎁</button>
+<button class="send-btn" onclick="triggerManualFirecrackers()">Send It to Neha 🎁</button>
 <div class="link-info">🔗 This creates the private link you'll send them</div>
 </div>
 
-<!-- FULL FRAME DOOR SCENE -->
+<!-- FULL FRAME DOOR SCENE (VOICE INTERACTIVE MUSEUM) -->
 <div class="door-full-frame" id="doorFullFrame">
-<div class="door-prompt-text">Knock three times. That's the rule.</div>
-
-<div class="door-wrapper" id="doorWrapper" onclick="handleDoorKnock()">
-<div class="door-reveal-content">
-<div class="reveal-msg-title">Come in, Mansi.</div>
-<div class="reveal-msg-sub">9 rooms, and every one of them is about you.</div>
+<p class="instruction">Knock three times. That's the rule.</p>
+<div class="welcome-door-msg" id="welcomeDoorMsg">
+  <h1>Come in, Neha.</h1>
+  <p>Friendship, memories and every<br>one of them is for you.</p>
 </div>
-
-<div class="door-gate-container" id="doorGateContainer">
-<img src="image11.png" alt="Door" class="door-bg-img" id="doorBgImg">
-<div class="door-board-sign">
-The Museum of Mansi<br><span>one visitor only</span>
+<div class="door-wrap">
+ <div class="arch-outer"><div class="arch-middle">
+  <div class="door" id="door">
+   <div class="sign">The Museum of<br>Neha<br>one visitor only</div>
+   <div class="panel top"></div><div class="panel bottom"></div>
+   <button class="knob" id="knob" onclick="knockDoor()" aria-label="Knock three times"></button>
+  </div>
+ </div></div>
+ <div class="dots"><i class="dot" id="d1"></i><i class="dot" id="d2"></i><i class="dot" id="d3"></i></div>
 </div>
-</div>
-</div>
-
-<div class="door-bottom-status" id="doorStatusText"></div>
+<p class="hint" id="hint">Tap the brass ring 👇</p>
 </div>
 
 </div>
@@ -1775,22 +1851,6 @@ function getAudioContext() {
     audioCtx.resume();
   }
   return audioCtx;
-}
-
-function speakText(text, callback) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    let utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    utterance.pitch = 1.0;
-    utterance.lang = 'en-US';
-    if (callback) {
-      utterance.onend = callback;
-    }
-    window.speechSynthesis.speak(utterance);
-  } else {
-    if (callback) setTimeout(callback, 1500);
-  }
 }
 
 function playCustomSong() {
@@ -1889,6 +1949,19 @@ function playCelebrationFanfare() {
     osc.start(now + i * 0.08);
     osc.stop(now + i * 0.08 + 0.8);
   });
+}
+
+function speakText(text, callback) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    if (callback) utterance.onend = callback;
+    window.speechSynthesis.speak(utterance);
+  } else if (callback) {
+    callback();
+  }
 }
 
 function triggerCakeSparkles() {
@@ -2040,11 +2113,7 @@ function triggerManualFirecrackers() {
   startInfiniteFirecrackers();
 }
 
-let knockCount = 0;
 let isPacketAnimating = false;
-let voiceStage = 0;
-let recognition = null;
-let isListeningActive = false;
 
 function animatePacketZoomAndCrack() {
   if (isPacketAnimating) return;
@@ -2105,103 +2174,165 @@ function animatePacketZoomAndCrack() {
   });
 }
 
-function initVoiceRecognition() {
+// POLISHED VOICE INTERACTIVE DOOR KNOCK LOGIC
+let knocks = 0;
+let opened = false;
+let currentVoiceStep = 0; // 0: normal knocks, 1: listening for name, 2: listening for food
+let recognitionInstance = null;
+
+function knockDoor(){
+ if(opened) return; 
+ knocks++;
+ const knob = document.getElementById('knob');
+ const hint = document.getElementById('hint');
+ 
+ knob.classList.remove('knock'); 
+ void knob.offsetWidth; 
+ knob.classList.add('knock');
+ 
+ document.getElementById('d'+knocks).classList.add('active');
+ playCutePopSound();
+ 
+ if(knocks === 1) hint.innerText = 'Twice more...';
+ if(knocks === 2) hint.innerText = 'One more...';
+ if(knocks === 3){
+  knocks = 3;
+  hint.innerText = '🎤 Listening for your voice...';
+  
+  // Speak prompt immediately
+  speakText("Who are you, tell me your name", () => {
+    startVoiceRecognitionForName();
+  });
+ }
+}
+
+function startVoiceRecognitionForName() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    const statusText = document.getElementById('doorStatusText');
-    statusText.innerText = "Voice Recognition not supported. Tap door to open!";
-    document.getElementById('doorWrapper').onclick = () => {
-      document.getElementById('doorWrapper').classList.add('open');
-      playCelebrationFanfare();
-    };
+    hint.innerText = 'Voice recognition not supported. Tap here to simulate!';
+    document.getElementById('doorFullFrame').onclick = simulateMansiThenFood;
     return;
   }
 
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = 'hi-IN';
+  if (recognitionInstance) {
+    try { recognitionInstance.stop(); } catch(e){}
+  }
+
+  const recognition = new SpeechRecognition();
+  recognitionInstance = recognition;
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
   recognition.onresult = (event) => {
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      transcript += event.results[i][0].transcript;
-    }
-    transcript = transcript.toLowerCase().trim();
-    const statusText = document.getElementById('doorStatusText');
+    const transcript = event.results[0][0].transcript.toLowerCase();
+    console.log("Heard:", transcript);
 
-    if (voiceStage === 1) {
-      if (transcript.includes("mansi") || transcript.includes("मानसी") || transcript.includes("me")) {
-        voiceStage = 2;
-        isListeningActive = false;
-        try { recognition.stop(); } catch(e){}
-
-        statusText.innerText = "🔊 Door: Main nahi manta! Apna favourite food batao...";
-        speakText("Main nahi manta! Apna favourite food batao...", () => {
-          statusText.innerText = "🎙️ Listening for food name... (Say 'Takatak')";
-          isListeningActive = true;
-          try { recognition.start(); } catch(e){}
-        });
-      }
-    } else if (voiceStage === 2) {
-      if (transcript.includes("takatak") || transcript.includes("टकाटक") || transcript.includes("taka tak")) {
-        isListeningActive = false;
-        try { recognition.stop(); } catch(e){}
-        statusText.innerText = "✨ Verified! Opening the museum door...";
-        speakText("Welcome in Mansi!", () => {
-          document.getElementById('doorWrapper').classList.add('open');
-          playCelebrationFanfare();
-        });
-      }
+    if (transcript.includes('mansi')) {
+      // Step 1 correct: She said Mansi
+      hint.innerText = `You said: "${transcript}". Verifying...`;
+      speakText("I don't believe you are Mansi. Please tell me your favourite food", () => {
+        hint.innerText = '🎤 Now tell me your favourite food...';
+        startVoiceRecognitionForFood();
+      });
+    } else {
+      hint.innerText = `Heard "${transcript}". Say "Mansi"!`;
+      speakText("I didn't catch that. Who are you, tell me your name", () => {
+        try { recognition.start(); } catch(e){}
+      });
     }
   };
 
-  recognition.onerror = (err) => {
-    if (err.error !== 'no-speech' && err.error !== 'aborted') {
-      console.log("Speech recognition error:", err.error);
-    }
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error:", event.error);
+    setTimeout(() => {
+      try { recognition.start(); } catch(e){}
+    }, 500);
   };
 
   recognition.onend = () => {
-    if (isListeningActive) {
-      try {
-        recognition.start();
-      } catch(e) {}
+    // restart if not opened yet
+    if (!opened && currentVoiceStep === 0) {
+      try { recognition.start(); } catch(e){}
     }
   };
+
+  try {
+    recognition.start();
+  } catch(e) {
+    console.error(e);
+  }
 }
 
-function handleDoorKnock() {
-  if (knockCount >= 3) return;
+function startVoiceRecognitionForFood() {
+  currentVoiceStep = 1;
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) return;
 
-  knockCount++;
-  playCutePopSound();
-
-  const statusText = document.getElementById('doorStatusText');
-  const doorWrapper = document.getElementById('doorWrapper');
-
-  gsap.to(doorWrapper, {
-    x: 6,
-    duration: 0.08,
-    yoyo: true,
-    repeat: 3
-  });
-
-  if (knockCount === 1) {
-    statusText.innerText = "Twice more... 🫣";
-  } else if (knockCount === 2) {
-    statusText.innerText = "One more 👁️";
-  } else if (knockCount === 3) {
-    voiceStage = 1;
-    statusText.innerText = "🔊 Door: Who are you?";
-
-    speakText("Who are you?", () => {
-      statusText.innerText = "🎙️ Listening... Speak whenever you're ready!";
-      initVoiceRecognition();
-      isListeningActive = true;
-      try { recognition.start(); } catch(e){}
-    });
+  if (recognitionInstance) {
+    try { recognitionInstance.stop(); } catch(e){}
   }
+
+  const recognition = new SpeechRecognition();
+  recognitionInstance = recognition;
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript.toLowerCase();
+    console.log("Heard food:", transcript);
+
+    if (transcript.includes('takatak') || transcript.includes('momos')) {
+      opened = true;
+      hint.innerText = '✨ Access Granted! Welcome home ♥';
+      speakText("Access granted. Welcome!", () => {
+        document.getElementById('doorFullFrame').classList.add('open');
+        document.getElementById('welcomeDoorMsg').classList.add('show');
+        playCelebrationFanfare();
+      });
+    } else {
+      hint.innerText = `Heard "${transcript}". Say Takatak or Momos!`;
+      speakText("That's not correct. Please tell me your favourite food", () => {
+        try { recognition.start(); } catch(e){}
+      });
+    }
+  };
+
+  recognition.onerror = (event) => {
+    setTimeout(() => {
+      try { recognition.start(); } catch(e){}
+    }, 500);
+  };
+
+  recognition.onend = () => {
+    if (!opened) {
+      try { recognition.start(); } catch(e){}
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// Fallback click handler if speech recognition isn't available in browser
+function simulateMansiThenFood() {
+  document.getElementById('doorFullFrame').onclick = null;
+  hint.innerText = 'I don\'t believe you are Mansi. What\'s your favourite food?';
+  speakText("I don't believe you are Mansi. Please tell me your favourite food", () => {
+    setTimeout(() => {
+      opened = true;
+      hint.innerText = '✨ Access Granted! Welcome home ♥';
+      speakText("Access granted. Welcome!", () => {
+        document.getElementById('doorFullFrame').classList.add('open');
+        document.getElementById('welcomeDoorMsg').classList.add('show');
+        playCelebrationFanfare();
+      });
+    }, 2500);
+  });
 }
 
 let leaves = [];
@@ -2440,10 +2571,10 @@ function generateHeartCanopy() {
   const colors = ['#ff477e', '#ff758c', '#ff5c8d', '#ffa6c1', '#ff85a1', '#ffb3c6', '#f72585', '#ff9ebb', '#e63946', '#ffb5a7'];
   const centerX = canvas.width / 2;
   
-  const treeTotalHeight = Math.min(235, canvas.height * 0.36); // बिल्कुल बैलेंस्ड लंबाई और पोजीशन
+  const treeTotalHeight = Math.min(235, canvas.height * 0.36);
   const branchBaseY = (canvas.height - 15) - treeTotalHeight;
   const centerY = branchBaseY - 110; 
-  const scale = 7.8; // बिल्कुल सही और सटीक साइज (न ज़्यादा बड़ा, न छोटा)
+  const scale = 7.8;
 
   let step = 8;
   for (let px = centerX - 150; px <= centerX + 150; px += step) {
@@ -2735,7 +2866,7 @@ function startBirthdaySequence() {
     document.getElementById("velasContainer").classList.add("active");
 
     const bakingSub = document.getElementById("bakingSubtitle");
-    bakingSub.innerText = "baking something sweet for mansiya bhukkad 😚";
+    bakingSub.innerText = "baking something sweet for nehiya bhukkad 😚";
     gsap.to(bakingSub, { opacity: 1, duration: 0.6 });
 
     gsap.to("#blowHint", { opacity: 1, duration: 0.5 });
@@ -2893,7 +3024,7 @@ function transitionToEndingScene() {
 }
 
 const fullLetterText =
-`Dear Mansi,
+`Dear Neha,
 
 I keep thinking about how lucky I got with you. You have seen me at my worst and stayed anyway, and I do not say thank you nearly enough for that. 🤍 This year, I hope life is gentle with you, brings you all the happiness you deserve, and keeps that beautiful smile on your face.
 
@@ -3005,12 +3136,8 @@ function resetApp() {
     clearInterval(infiniteFireworksInterval);
     infiniteFireworksInterval = null;
   }
-  isListeningActive = false;
-  if (recognition) {
-    try { recognition.abort(); } catch(e){}
-  }
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
+  if (recognitionInstance) {
+    try { recognitionInstance.stop(); } catch(e){}
   }
 
   const vid = document.getElementById('birthdayVideo');
@@ -3022,10 +3149,11 @@ function resetApp() {
   poppedCount = 0;
   currentPull = 0;
   isEnvelopeOpened = false;
-  knockCount = 0;
   isPacketAnimating = false;
-  voiceStage = 0;
   animationTriggered = false;
+  knocks = 0;
+  opened = false;
+  currentVoiceStep = 0;
 
   if (animRequestId) cancelAnimationFrame(animRequestId);
   ctx.clearRect(0, 0, canvas.width, canvas.width);
@@ -3049,7 +3177,7 @@ function resetApp() {
   document.getElementById("velasContainer").classList.remove("active", "extinguished");
 
   const bakingSub = document.getElementById("bakingSubtitle");
-  bakingSub.innerText = "baking something sweet for mansiya bhukkad 😚";
+  bakingSub.innerText = "baking something sweet for nehiya bhukkad 😚";
   gsap.set(bakingSub, { opacity: 0 });
   gsap.set("#blowHint", { opacity: 0 });
 
@@ -3106,8 +3234,11 @@ function resetApp() {
   });
 
   gsap.set("#doorFullFrame", { opacity: 0, pointerEvents: "none" });
-  document.getElementById('doorWrapper').classList.remove('open');
-  document.getElementById('doorStatusText').innerText = "";
+  document.getElementById('doorFullFrame').classList.remove('open');
+  document.getElementById('welcomeDoorMsg').classList.remove('show');
+  document.getElementById('hint').innerText = 'Tap the brass ring 👇';
+  document.getElementById('doorFullFrame').onclick = null;
+  for(let i=1; i<=3; i++) document.getElementById('d'+i).classList.remove('active');
 }
 </script>
 </body>
