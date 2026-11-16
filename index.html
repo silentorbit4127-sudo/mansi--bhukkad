@@ -346,7 +346,7 @@ button, a, input, [role="button"], div {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #1b1528;
+  background: radial-gradient(circle at center, #2c163a 0%, #11081a 100%);
   top: 0;
   left: 0;
   z-index: 60;
@@ -1067,6 +1067,11 @@ button, a, input, [role="button"], div {
   animation: bounceCat 2s ease-in-out infinite alternate;
 }
 
+@keyframes bounceCat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
 .takatak-packet-wrapper {
   position: absolute;
   bottom: 33px;
@@ -1112,9 +1117,7 @@ button, a, input, [role="button"], div {
   pointer-events: none;
   top: -5%;
   left: -5%;
-}
-
-@keyframes pulseRing {
+  }@keyframes pulseRing {
   0% { transform: scale(0.9) rotate(0deg); opacity: 1; }
   100% { transform: scale(1.4) rotate(180deg); opacity: 0; }
 }
@@ -1137,6 +1140,22 @@ button, a, input, [role="button"], div {
   padding: 20px;
   overflow: hidden;
   transform-origin: center center;
+  transition: background 1.5s ease;
+}
+
+.door-full-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 42%, #fff1bd 0%, #f3c66c 32%, #a56a32 63%, #183c34 100%);
+  opacity: 0;
+  transition: opacity 2s cubic-bezier(.7,0,.2,1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.door-full-frame.open::after {
+  opacity: 1;
 }
 
 .door-full-frame:before {
@@ -1145,6 +1164,7 @@ button, a, input, [role="button"], div {
   inset:0;
   background:repeating-linear-gradient(115deg,transparent 0 5px,#ffffff04 6px 7px);
   pointer-events:none;
+  z-index: 4;
 }
 
 .instruction {
@@ -1154,6 +1174,7 @@ button, a, input, [role="button"], div {
   letter-spacing: .4px;
   color: #f4e5c6;
   text-shadow: 0 2px 5px #000;
+  z-index: 5;
 }
 
 .door-wrap {
@@ -1165,9 +1186,9 @@ button, a, input, [role="button"], div {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 3;
 }
 
-/* Layered arched wooden surround */
 .arch-outer {
   position: absolute;
   inset: 0;
@@ -1184,6 +1205,7 @@ button, a, input, [role="button"], div {
   background: linear-gradient(90deg,#0a302d,#1c766a 12%,#075047 50%,#0a302d);
   padding: 9px;
   box-shadow: inset 0 0 0 2px #39877a, inset 0 0 18px #001c19;
+  position: relative;
 }
 
 .door {
@@ -1197,6 +1219,7 @@ button, a, input, [role="button"], div {
   background: linear-gradient(90deg,#075047,#0b6258 23%,#07534b 75%,#03443e);
   border: 2px solid #164a42;
   box-shadow: inset 0 0 0 2px #24776a, inset 0 0 30px #002c27, 2px 0 8px #001b18;
+  z-index: 3;
 }
 
 .door:before {
@@ -1280,6 +1303,7 @@ button, a, input, [role="button"], div {
   transform: translateX(-50%);
   display: flex;
   gap: 8px;
+  z-index: 5;
 }
 
 .dot {
@@ -1303,6 +1327,7 @@ button, a, input, [role="button"], div {
   text-shadow: 0 2px 5px #000;
   text-align: center;
   padding: 0 10px;
+  z-index: 5;
 }
 
 .door-full-frame.open .door {
@@ -1312,21 +1337,95 @@ button, a, input, [role="button"], div {
 .welcome-door-msg {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  color: #4d3020;
-  background: radial-gradient(ellipse at center,#fff1bd 0%,#f3c66c 32%,#a56a32 63%,#183c34 100%);
+  background: radial-gradient(ellipse at center,#1c766a 0%,#0b3935 52%,#031d1c 100%);
+  border-radius: 46% 46% 1px 1px / 17% 17% 1px 1px;
   opacity: 0;
   transition: opacity 2s;
+  padding: 20px;
+  cursor: pointer;
 }
 
 .welcome-door-msg.show { opacity: 1; }
-.welcome-door-msg h1 { font-size: clamp(23px,6vw,30px); font-weight: normal; margin-bottom: 13px; }
-.welcome-door-msg p { font-size: 12px; line-height: 1.7; }
+.welcome-door-msg h1 { font-size: clamp(20px,5vw,26px); font-weight: normal; margin-bottom: 10px; text-transform: lowercase; color: #f5c64b; }
+.welcome-door-msg p { font-size: clamp(13px,3.5vw,16px); line-height: 1.5; font-weight: 600; color: #f4e5c6; }
+
+/* CREAM CIRCLE EXPANDING TRANSITION OVERLAY FROM WELCOME TEXT */
+.cream-expand-transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,#ffe6ad 0%,#fff0d8 48%,#f7c7b9 100%);
+  z-index: 250;
+  clip-path: circle(0% at 50% 50%);
+  pointer-events: none;
+}
+
+/* FRIENDSHIP BAND SCENE */
+.friendship-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,#ffe6ad 0%,#fff0d8 48%,#f7c7b9 100%);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 15px 92px;
+  overflow-x: hidden;
+  font-family: Arial,Helvetica,sans-serif;
+  color: #38251f;
+}
+
+.friendship-scene::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.34;
+  background-color:transparent;
+  background-image:linear-gradient(45deg,#fff8e8 25%,transparent 25%,transparent 75%,#fff8e8 75%),linear-gradient(45deg,#fff8e8 25%,transparent 25%,transparent 75%,#fff8e8 75%);
+  background-position:0 0,7px 7px;
+  background-size:14px 14px;
+}
+
+.fs-content {
+  width: 100%;
+  margin-top: clamp(20px,6vh,80px);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.fs-kicker { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; color: #df6956; margin-bottom: 6px; }
+.fs-content h1 { font-size: clamp(20px,5.2vw,26px); line-height: 1.2; margin: 0 0 10px; font-weight: 800; letter-spacing: -.7px; }
+.fs-content h1 span { color: #e99a20; background: linear-gradient(transparent 62%,#ffe0a0 62%); padding: 0 2px; }
+
+.band-wrap { height: 190px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; width: 100%; max-width: 360px; position: relative; border-radius: 12px; overflow: hidden; }
+#braceletCanvas { width: 100%; height: 190px; display: block; cursor: pointer; }
+
+.fs-description { font-family: Georgia,serif; color: #92796b; font-size: 12px; line-height: 1.5; margin: 0 auto 14px; max-width: 330px; }
+.tie { width: 100%; max-width: 440px; border: 0; border-radius: 13px; padding: 14px 16px; background: linear-gradient(105deg,#ffb833,#f27a17); color: #fff; font-size: 14px; font-weight: 800; box-shadow: 0 5px 13px #dc812c38; cursor: pointer; transition: transform .2s,opacity .3s; }
+.tie:active { transform: scale(.98); }
+.tie:disabled { opacity: .58; cursor: default; }
+
+.charms { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 12px auto 0; padding: 7px 10px; background: #fffaf2; border: 1px solid #f1e4d4; border-radius: 30px; width: min(100%,350px); box-shadow: 0 2px 7px #9c75551a; }
+.charm { width: 24px; height: 24px; border-radius: 50%; border: 1px dashed #d7cabb; background: #fff9ed; display: grid; place-items: center; font-size: 12px; }
+.charm:first-child { background: #f27662; color: white; border: 0; }
+
+.fs-confetti { position: fixed; top: -15px; width: 7px; height: 15px; border-radius: 3px; z-index: 350; pointer-events: none; animation: fallFs 2.8s linear forwards; }
+@keyframes fallFs { to { transform: translate(var(--drift),110svh) rotate(760deg); opacity: .15; } }
 
 .ending-subtitle {
   font-size: 0.85rem;
@@ -1404,7 +1503,8 @@ button, a, input, [role="button"], div {
 <line x1="94" y1="34" x2="82" y2="22" stroke="#ffe566" stroke-width="2" stroke-linecap="round"/>
 <line x1="138" y1="50" x2="152" y2="46" stroke="#ffe566" stroke-width="2" stroke-linecap="round"/>
 <line x1="82" y1="50" x2="68" y2="46" stroke="#ffe566" stroke-width="2" stroke-linecap="round"/>
-</g> <path d="M 20,110 Q 65,60 95,72" fill="none" stroke="#a06535" stroke-width="9.5" stroke-linecap="round"/>
+</g> 
+<path d="M 20,110 Q 65,60 95,72" fill="none" stroke="#a06535" stroke-width="9.5" stroke-linecap="round"/>
 <path d="M 200,110 Q 155,60 125,72" fill="none" stroke="#a06535" stroke-width="9.5" stroke-linecap="round"/>
 <circle cx="20" cy="110" r="5" fill="#a06535"/>
 <circle cx="200" cy="110" r="5" fill="#a06535"/>
@@ -1465,7 +1565,8 @@ C173.293,395.631,177.541,410.566,173.667,411.567z
 M173.667,427.569c-49.795,0-101.101,0-147.334,0c-3.999,0-4-16.002,0-16.002
 c46.385,0,97.539,0,147.334,0C177.668,411.567,177.667,427.569,173.667,427.569z
 " />
-</path><path fill="#8b6a60" d="M100-178.521c1.858,0,3.364,1.506,3.364,3.363c0,0,0,33.17,0,44.227
+</path>
+<path fill="#8b6a60" d="M100-178.521c1.858,0,3.364,1.506,3.364,3.363c0,0,0,33.17,0,44.227
 c0,19.144,0,57.431,0,76.574c0,10.152,0,40.607,0,40.607c0,1.858-1.506,3.364-3.364,3.364l0,0c-1.858,0-3.364-1.506-3.364-3.364c0,0,0-30.455,0-40.607c0-19.144,0-57.432,0-76.575c0-11.057,0-44.226,0-44.226C96.636-177.015,98.142-178.521,100-178.521
 L100-178.521z">
 <animate id="relleno_2" attributeName="d" calcMode="spline" keySplines="0 0 1 1; 0 0 1 1; 0 0 0.58 1" begin="indefinite" dur="0.5s" fill="freeze" values="
@@ -1597,9 +1698,11 @@ c-7.5,4.833-9.508-3.78-9.299-7.004c0.799-12.329,23.592-7.153,38.132-7.329c10.234
 c16.642-0.61,32.903,1.125,46.213,1.5c12.438,0.351,35.058-5.579,31.863,6.451c-5.532,20.833,1.25,28.216-4.409,27.883
 c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.547,443.568,121.798,416.515,111.547,415.233z
 " />
-</path> <rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
+</path> 
+<rect x="10" y="475.571" fill="#fefae9" width="180" height="4" />
 </svg>
-</div><div class="baking-subtitle" id="bakingSubtitle">baking something sweet for nehiya bhukkad 😚</div>
+</div>
+<div class="baking-subtitle" id="bakingSubtitle">baking something sweet for nehiya bhukkad 😚</div>
 <div class="blow-hint" id="blowHint">✨ Tap anywhere to extinguish the candles!</div>
 </div>
 
@@ -1787,14 +1890,14 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
 <!-- FULL FRAME DOOR SCENE (VOICE INTERACTIVE MUSEUM) -->
 <div class="door-full-frame" id="doorFullFrame">
 <p class="instruction">Knock three times. That's the rule.</p>
-<div class="welcome-door-msg" id="welcomeDoorMsg">
-  <h1>Come in, Neha.</h1>
-  <p>Friendship, memories and every<br>one of them is for you.</p>
-</div>
 <div class="door-wrap">
  <div class="arch-outer"><div class="arch-middle">
+  <div class="welcome-door-msg" id="welcomeDoorMsg" onclick="triggerFriendshipTransition()">
+    <h1>come in, mansi</h1>
+    <p>"Welcome To Your<br>Little Surprise World"</p>
+  </div>
   <div class="door" id="door">
-   <div class="sign">The Museum of<br>Neha<br>one visitor only</div>
+   <div class="sign">The Museum of<br>mansi bauni<br>one visitor only</div>
    <div class="panel top"></div><div class="panel bottom"></div>
    <button class="knob" id="knob" onclick="knockDoor()" aria-label="Knock three times"></button>
   </div>
@@ -1802,6 +1905,30 @@ c-7.606-0.447-6.058-37.895-20.62-23.333c-10.167,10.166-15.972-0.747-25,12C119.54
  <div class="dots"><i class="dot" id="d1"></i><i class="dot" id="d2"></i><i class="dot" id="d3"></i></div>
 </div>
 <p class="hint" id="hint">Tap the brass ring 👇</p>
+</div>
+
+<!-- CREAM CIRCLE EXPANDING TRANSITION -->
+<div class="cream-expand-transition" id="creamExpandTransition"></div>
+
+<!-- FRIENDSHIP BAND SCENE (ROOM 1 · THE ENTRANCE) -->
+<div class="friendship-scene" id="friendshipScene">
+ <nav class="topbar" style="position:relative; z-index:10;">
+  <button class="pill" onclick="resetApp()">← Back</button>
+  <button class="pill preview" onclick="previewFriendshipPage()">PREVIEW</button>
+  <button class="pill sound" id="fsSoundBtn" onclick="toggleFsSound()" aria-label="Toggle sound">🔊</button>
+ </nav>
+ <section class="fs-content">
+  <div class="fs-kicker">ROOM 1 · THE ENTRANCE</div>
+  <h1>First, your friendship <span>band.</span></h1>
+  <div class="band-wrap">
+   <canvas id="braceletCanvas" width="360" height="190"></canvas>
+  </div>
+  <p class="fs-description">This one was made for you. Tap the button to tie it<br class="desktop"> on.</p>
+  <button class="tie" id="tieBtn" onclick="tieBand()">Tie it on&nbsp; 💛</button>
+  <div class="charms" aria-label="Friendship charms">
+   <span class="charm">🧡</span><span class="charm">🌞</span><span class="charm">🎀</span><span class="charm">🌷</span><span class="charm">🍀</span><span class="charm">🦋</span><span class="charm">🌼</span><span class="charm">♡</span><span class="charm">✨</span>
+  </div>
+ </section>
 </div>
 
 </div>
@@ -2109,6 +2236,13 @@ function startInfiniteFirecrackers() {
   infiniteFireworksInterval = setInterval(burstCluster, 700);
 }
 
+function stopInfiniteFirecrackers() {
+  if (infiniteFireworksInterval) {
+    clearInterval(infiniteFireworksInterval);
+    infiniteFireworksInterval = null;
+  }
+}
+
 function triggerManualFirecrackers() {
   startInfiniteFirecrackers();
 }
@@ -2165,6 +2299,9 @@ function animatePacketZoomAndCrack() {
     }
   })
   .add(() => {
+    // Stop firecrackers here so sound doesn't carry over to door scene!
+    stopInfiniteFirecrackers();
+    
     gsap.set("#doorFullFrame", { opacity: 1, pointerEvents: "auto", scale: 0.8 });
     gsap.to("#doorFullFrame", {
       scale: 1,
@@ -2177,7 +2314,7 @@ function animatePacketZoomAndCrack() {
 // POLISHED VOICE INTERACTIVE DOOR KNOCK LOGIC
 let knocks = 0;
 let opened = false;
-let currentVoiceStep = 0; // 0: normal knocks, 1: listening for name, 2: listening for food
+let currentVoiceStep = 0; 
 let recognitionInstance = null;
 
 function knockDoor(){
@@ -2199,7 +2336,6 @@ function knockDoor(){
   knocks = 3;
   hint.innerText = '🎤 Listening for your voice...';
   
-  // Speak prompt immediately
   speakText("Who are you, tell me your name", () => {
     startVoiceRecognitionForName();
   });
@@ -2209,8 +2345,7 @@ function knockDoor(){
 function startVoiceRecognitionForName() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    hint.innerText = 'Voice recognition not supported. Tap here to simulate!';
-    document.getElementById('doorFullFrame').onclick = simulateMansiThenFood;
+    hint.innerText = 'Voice recognition not supported. Tap welcome text below!';
     return;
   }
 
@@ -2226,10 +2361,8 @@ function startVoiceRecognitionForName() {
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript.toLowerCase();
-    console.log("Heard:", transcript);
 
     if (transcript.includes('mansi')) {
-      // Step 1 correct: She said Mansi
       hint.innerText = `You said: "${transcript}". Verifying...`;
       speakText("I don't believe you are Mansi. Please tell me your favourite food", () => {
         hint.innerText = '🎤 Now tell me your favourite food...';
@@ -2243,15 +2376,13 @@ function startVoiceRecognitionForName() {
     }
   };
 
-  recognition.onerror = (event) => {
-    console.error("Speech recognition error:", event.error);
+  recognition.onerror = () => {
     setTimeout(() => {
       try { recognition.start(); } catch(e){}
     }, 500);
   };
 
   recognition.onend = () => {
-    // restart if not opened yet
     if (!opened && currentVoiceStep === 0) {
       try { recognition.start(); } catch(e){}
     }
@@ -2259,9 +2390,7 @@ function startVoiceRecognitionForName() {
 
   try {
     recognition.start();
-  } catch(e) {
-    console.error(e);
-  }
+  } catch(e) {}
 }
 
 function startVoiceRecognitionForFood() {
@@ -2281,15 +2410,13 @@ function startVoiceRecognitionForFood() {
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript.toLowerCase();
-    console.log("Heard food:", transcript);
 
     if (transcript.includes('takatak') || transcript.includes('momos')) {
       opened = true;
-      hint.innerText = '✨ Access Granted! Welcome home ♥';
+      hint.innerText = '✨ Tap "come in, mansi" to enter!';
       speakText("Access granted. Welcome!", () => {
         document.getElementById('doorFullFrame').classList.add('open');
         document.getElementById('welcomeDoorMsg').classList.add('show');
-        playCelebrationFanfare();
       });
     } else {
       hint.innerText = `Heard "${transcript}". Say Takatak or Momos!`;
@@ -2299,7 +2426,7 @@ function startVoiceRecognitionForFood() {
     }
   };
 
-  recognition.onerror = (event) => {
+  recognition.onerror = () => {
     setTimeout(() => {
       try { recognition.start(); } catch(e){}
     }, 500);
@@ -2313,25 +2440,23 @@ function startVoiceRecognitionForFood() {
 
   try {
     recognition.start();
-  } catch(e) {
-    console.error(e);
-  }
+  } catch(e) {}
 }
 
-// Fallback click handler if speech recognition isn't available in browser
-function simulateMansiThenFood() {
-  document.getElementById('doorFullFrame').onclick = null;
-  hint.innerText = 'I don\'t believe you are Mansi. What\'s your favourite food?';
-  speakText("I don't believe you are Mansi. Please tell me your favourite food", () => {
-    setTimeout(() => {
-      opened = true;
-      hint.innerText = '✨ Access Granted! Welcome home ♥';
-      speakText("Access granted. Welcome!", () => {
-        document.getElementById('doorFullFrame').classList.add('open');
-        document.getElementById('welcomeDoorMsg').classList.add('show');
-        playCelebrationFanfare();
-      });
-    }, 2500);
+// TRANSITION FROM DOOR WELCOME MESSAGE TO FRIENDSHIP BAND SCENE
+function triggerFriendshipTransition() {
+  if (!opened) return;
+  playCutePopSound();
+  
+  let tl = gsap.timeline();
+  tl.to("#creamExpandTransition", {
+    clipPath: "circle(150% at 50% 50%)",
+    duration: 1.2,
+    ease: "power2.inOut"
+  })
+  .set("#friendshipScene", { opacity: 1, pointerEvents: "auto" })
+  .add(() => {
+    initFriendshipBand();
   });
 }
 
@@ -2751,7 +2876,7 @@ bowContainer.addEventListener('pointermove', (e) => {
   gsap.set(arrowGroup, { y: currentPull });
 });
 
-bowContainer.addEventListener('pointerup', (e) => {
+bowContainer.addEventListener('pointerup', () => {
   if (!isDragging) return;
   isDragging = false;
 
@@ -3129,13 +3254,393 @@ function setupFallingHeartsData() {
   }
 }
 
+// FRIENDSHIP BAND SCENE LOGIC & CANVAS DRAWING
+let fsTied = false, fsMusicOn = true;
+let braceletCanvas, fsCtx;
+let fWidth = 360, fHeight = 190, fDpr;
+let fsStartTime = 0;
+let fsParticles = [];
+
+const fsPalettes = [
+  { base: '#f2f4f8', mid: '#ffffff', shadow: '#b8c1d1', thread: '#dce2ed' },
+  { base: '#d62466', mid: '#f54988', shadow: '#8f1140', thread: '#ff85b3' },
+  { base: '#cfa6db', mid: '#ebd1f2', shadow: '#9a71a8', thread: '#f7e8fc' }
+];
+
+const fsFlowers = [
+  { palette: fsPalettes[0], scale: 0, pulse: 0, y: 0, x: 0 },
+  { palette: fsPalettes[1], scale: 0, pulse: 0, y: 0, x: 0 },
+  { palette: fsPalettes[2], scale: 0, pulse: 0, y: 0, x: 0 },
+  { palette: fsPalettes[0], scale: 0, pulse: 0, y: 0, x: 0 },
+  { palette: fsPalettes[1], scale: 0, pulse: 0, y: 0, x: 0 },
+  { palette: fsPalettes[2], scale: 0, pulse: 0, y: 0, x: 0 }
+];
+
+function initFriendshipBand() {
+  braceletCanvas = document.getElementById('braceletCanvas');
+  fsCtx = braceletCanvas.getContext('2d');
+  resizeBraceletCanvas();
+
+  braceletCanvas.addEventListener('pointerdown', (e) => {
+    if (!fsTied) return;
+    const rect = braceletCanvas.getBoundingClientRect();
+    const tapX = e.clientX - rect.left;
+    const tapY = e.clientY - rect.top;
+
+    fsFlowers.forEach(f => {
+      const dx = tapX - f.x;
+      const dy = tapY - f.y;
+      if (Math.hypot(dx, dy) < 32) {
+        f.pulse = 1;
+        spawnFsSparkles(f.x, f.y, f.palette.mid);
+      }
+    });
+  });
+
+  requestAnimationFrame(animateBracelet);
+}
+
+function resizeBraceletCanvas() {
+  if (!braceletCanvas) return;
+  fDpr = Math.min(window.devicePixelRatio || 1, 2);
+  fWidth = braceletCanvas.parentElement.clientWidth || 360;
+  fHeight = 190;
+  braceletCanvas.width = fWidth * fDpr;
+  braceletCanvas.height = fHeight * fDpr;
+  fsCtx.setTransform(fDpr, 0, 0, fDpr, 0, 0);
+}
+
+window.addEventListener('resize', resizeBraceletCanvas);
+
+function spawnFsSparkles(x, y, color) {
+  for (let i = 0; i < 14; i++) {
+    const angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.3;
+    const speed = 1.5 + Math.random() * 2.5;
+    fsParticles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      color: i % 2 === 0 ? '#ffd86b' : color,
+      size: 2 + Math.random() * 2.5
+    });
+  }
+  }function drawFsGoldBead(x, y, radius, shimmerPhase) {
+  fsCtx.save();
+  fsCtx.shadowColor = 'rgba(40, 25, 5, 0.45)';
+  fsCtx.shadowBlur = 4;
+  fsCtx.shadowOffsetY = 2;
+
+  const grad = fsCtx.createRadialGradient(
+    x - radius * 0.3, y - radius * 0.3, radius * 0.1,
+    x, y, radius
+  );
+  grad.addColorStop(0, '#fff7cc');
+  grad.addColorStop(0.3, '#f0c44d');
+  grad.addColorStop(0.75, '#a87919');
+  grad.addColorStop(1, '#5c3f08');
+
+  fsCtx.fillStyle = grad;
+  fsCtx.beginPath();
+  fsCtx.arc(x, y, radius, 0, Math.PI * 2);
+  fsCtx.fill();
+
+  fsCtx.shadowColor = 'transparent';
+  fsCtx.fillStyle = `rgba(255, 255, 255, ${0.65 + Math.sin(shimmerPhase) * 0.25})`;
+  fsCtx.beginPath();
+  fsCtx.ellipse(
+    x - radius * 0.32, y - radius * 0.32,
+    radius * 0.28, radius * 0.16,
+    -Math.PI / 4, 0, Math.PI * 2
+  );
+  fsCtx.fill();
+  fsCtx.restore();
+}
+
+function drawFsGreenKnotHorizontal(x, y, scale, radius) {
+  if (scale <= 0.01) return;
+  fsCtx.save();
+  fsCtx.translate(x, y);
+  fsCtx.scale(scale, scale);
+
+  fsCtx.shadowColor = 'rgba(0, 0, 0, 0.22)';
+  fsCtx.shadowBlur = 5;
+  fsCtx.shadowOffsetY = 2;
+
+  fsCtx.fillStyle = '#4e7029';
+  fsCtx.fillRect(-radius * 0.65, -radius * 0.28, radius * 1.3, radius * 0.56);
+
+  [-1, 1].forEach(dir => {
+    fsCtx.save();
+    fsCtx.translate(0, dir * radius * 0.24);
+    fsCtx.rotate(dir * 0.22);
+
+    const grad = fsCtx.createLinearGradient(-radius * 0.2, -radius * 0.3, radius * 0.2, radius * 0.3);
+    grad.addColorStop(0, '#8db858');
+    grad.addColorStop(0.5, '#5e8530');
+    grad.addColorStop(1, '#385219');
+
+    fsCtx.fillStyle = grad;
+    fsCtx.beginPath();
+    fsCtx.roundRect(-radius * 0.26, -radius * 0.32, radius * 0.52, radius * 0.64, radius * 0.22);
+    fsCtx.fill();
+
+    fsCtx.strokeStyle = 'rgba(215, 245, 175, 0.35)';
+    fsCtx.lineWidth = 1;
+    for (let i = -2; i <= 2; i += 2) {
+      fsCtx.beginPath();
+      fsCtx.moveTo(i * 2, -radius * 0.25);
+      fsCtx.lineTo(i * 2, radius * 0.25);
+      fsCtx.stroke();
+    }
+    fsCtx.restore();
+  });
+  fsCtx.restore();
+}
+
+function drawFsFlower(flower, radius, time) {
+  if (flower.scale <= 0.01) return;
+  const bounce = 1 + Math.sin(flower.pulse * Math.PI) * 0.18;
+  const finalScale = flower.scale * bounce;
+
+  fsCtx.save();
+  fsCtx.translate(flower.x, flower.y);
+  fsCtx.scale(finalScale, finalScale);
+
+  const petalCount = 6;
+  const p = flower.palette;
+
+  for (let i = 0; i < petalCount; i++) {
+    const angle = (i * Math.PI * 2) / petalCount - Math.PI / 3;
+    fsCtx.save();
+    fsCtx.rotate(angle);
+
+    fsCtx.shadowColor = 'rgba(25, 30, 45, 0.24)';
+    fsCtx.shadowBlur = 6;
+    fsCtx.shadowOffsetY = 3;
+
+    const grad = fsCtx.createRadialGradient(0, -radius * 0.25, 2, 0, -radius * 0.55, radius * 0.75);
+    grad.addColorStop(0, p.shadow);
+    grad.addColorStop(0.45, p.mid);
+    grad.addColorStop(0.85, p.base);
+    grad.addColorStop(1, p.shadow);
+
+    fsCtx.fillStyle = grad;
+    fsCtx.beginPath();
+    fsCtx.moveTo(0, 0);
+    fsCtx.bezierCurveTo(
+      -radius * 0.44, -radius * 0.32,
+      -radius * 0.48, -radius * 0.96,
+      0, -radius * 0.98
+    );
+    fsCtx.bezierCurveTo(
+      radius * 0.48, -radius * 0.96,
+      radius * 0.44, -radius * 0.32,
+      0, 0
+    );
+    fsCtx.fill();
+
+    fsCtx.shadowColor = 'transparent';
+    fsCtx.strokeStyle = p.thread;
+    fsCtx.lineWidth = 1.1;
+    fsCtx.globalAlpha = 0.55;
+
+    for (let t = -2; t <= 2; t++) {
+      fsCtx.beginPath();
+      fsCtx.moveTo(t * 1.4, -radius * 0.18);
+      fsCtx.quadraticCurveTo(
+        t * (radius * 0.13), -radius * 0.58,
+        t * (radius * 0.08), -radius * 0.91
+      );
+      fsCtx.stroke();
+    }
+
+    fsCtx.strokeStyle = p.shadow;
+    fsCtx.globalAlpha = 0.35;
+    fsCtx.beginPath();
+    fsCtx.moveTo(0, -radius * 0.2);
+    fsCtx.lineTo(0, -radius * 0.94);
+    fsCtx.stroke();
+
+    fsCtx.restore();
+  }
+
+  drawFsGoldBead(0, 0, radius * 0.23, time * 0.004 + flower.x * 0.05);
+  fsCtx.restore();
+}
+
+function drawFsRightClasp(x, y, scale, radius, time) {
+  if (scale <= 0.01) return;
+  fsCtx.save();
+  fsCtx.translate(x, y);
+  fsCtx.scale(scale, scale);
+
+  const stringSway = Math.sin(time * 0.0025) * 8;
+  const cords = [
+    { offsetY: -radius * 0.48, endY: -radius * 1.2, color: '#6b943b', width: 4.5 },
+    { offsetY: -radius * 0.28, endY: -radius * 0.6, color: '#eef2f7', width: 3.5 },
+    { offsetY: 0, endY: 0, color: '#e6397a', width: 4 },
+    { offsetY: radius * 0.28, endY: radius * 0.6, color: '#eef2f7', width: 3.5 },
+    { offsetY: radius * 0.48, endY: radius * 1.2, color: '#6b943b', width: 4.5 }
+  ];
+
+  cords.forEach((c, idx) => {
+    fsCtx.strokeStyle = c.color;
+    fsCtx.lineWidth = c.width;
+    fsCtx.lineCap = 'round';
+    fsCtx.beginPath();
+    fsCtx.moveTo(radius * 0.15, c.offsetY);
+    fsCtx.quadraticCurveTo(
+      radius * 0.9, c.endY * 0.6 + stringSway * 0.4,
+      radius * 1.75, c.endY + stringSway + idx * 1.5
+    );
+    fsCtx.stroke();
+  });
+
+  const archKnots = 7;
+  for (let i = 0; i < archKnots; i++) {
+    const t = i / (archKnots - 1);
+    const angle = -Math.PI / 2 + t * Math.PI;
+    const kx = Math.cos(angle) * (radius * 0.36) + radius * 0.18;
+    const ky = Math.sin(angle) * (radius * 0.56);
+
+    fsCtx.save();
+    fsCtx.translate(kx, ky);
+    fsCtx.rotate(angle + Math.PI / 2);
+    fsCtx.shadowColor = 'rgba(0,0,0,0.18)';
+    fsCtx.shadowBlur = 4;
+    fsCtx.fillStyle = i % 2 === 0 ? '#ffffff' : '#e6ebf2';
+    fsCtx.beginPath();
+    fsCtx.roundRect(-radius * 0.14, -radius * 0.18, radius * 0.28, radius * 0.36, 5);
+    fsCtx.fill();
+    fsCtx.restore();
+  }
+
+  drawFsGoldBead(radius * 0.22, 0, radius * 0.22, time * 0.005);
+  fsCtx.restore();
+}
+
+function animateBracelet(now) {
+  if (!fsCtx) return;
+  fsCtx.clearRect(0, 0, fWidth, fHeight);
+
+  if (!fsTied) {
+    requestAnimationFrame(animateBracelet);
+    return;
+  }
+
+  const elapsed = (now - fsStartTime) / 1000;
+
+  const barGrad = fsCtx.createLinearGradient(0, 0, fWidth, 0);
+  barGrad.addColorStop(0, '#b5c2d4');
+  barGrad.addColorStop(1, '#dce4f0');
+  fsCtx.fillStyle = barGrad;
+  fsCtx.fillRect(0, fHeight / 2 - 25, fWidth, 6);
+
+  const flowerRadius = Math.min(fWidth * 0.075, 26);
+  const spacing = flowerRadius * 2.1;
+  const totalWidth = (fsFlowers.length - 1) * spacing;
+  const startX = (fWidth - totalWidth) / 2;
+  const centerY = fHeight / 2;
+
+  const leftKnotScale = Math.min(1, elapsed * 4);
+  drawFsGreenKnotHorizontal(startX - spacing * 0.6, centerY, leftKnotScale, flowerRadius * 0.65);
+
+  fsFlowers.forEach((f, idx) => {
+    const delay = idx * 0.2;
+    const progress = Math.max(0, Math.min(1, (elapsed - delay) * 2.6));
+    f.scale = progress === 0 ? 0 : 1 - Math.pow(1 - progress, 3);
+
+    if (f.pulse > 0) {
+      f.pulse = Math.max(0, f.pulse - 0.045);
+    }
+
+    const swayFactor = (idx + 1) / fsFlowers.length;
+    const swayOffset = Math.sin(now * 0.002 - idx * 0.35) * (6 * swayFactor);
+
+    f.x = startX + idx * spacing;
+    f.y = centerY + swayOffset;
+
+    if (idx < fsFlowers.length - 1) {
+      const knotDelay = delay + 0.1;
+      const knotProgress = Math.max(0, Math.min(1, (elapsed - knotDelay) * 3));
+      const nextSway = Math.sin(now * 0.002 - (idx + 0.5) * 0.35) * (6 * ((idx + 1.5) / fsFlowers.length));
+
+      drawFsGreenKnotHorizontal(
+        f.x + spacing * 0.5,
+        centerY + nextSway,
+        knotProgress,
+        flowerRadius * 0.68
+      );
+    }
+
+    drawFsFlower(f, flowerRadius, now);
+  });
+
+  const rightDelay = fsFlowers.length * 0.2;
+  const rightProgress = Math.max(0, Math.min(1, (elapsed - rightDelay) * 2.5));
+  const lastFlower = fsFlowers[fsFlowers.length - 1];
+
+  drawFsRightClasp(
+    lastFlower.x + spacing * 0.6,
+    centerY,
+    rightProgress,
+    flowerRadius,
+    now
+  );
+
+  for (let i = fsParticles.length - 1; i >= 0; i--) {
+    const pt = fsParticles[i];
+    pt.x += pt.vx;
+    pt.y += pt.vy;
+    pt.vy += 0.04;
+    pt.life -= 0.025;
+
+    if (pt.life <= 0) {
+      fsParticles.splice(i, 1);
+      continue;
+    }
+
+    fsCtx.save();
+    fsCtx.globalAlpha = pt.life;
+    fsCtx.fillStyle = pt.color;
+    fsCtx.beginPath();
+    fsCtx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+    fsCtx.fill();
+    fsCtx.restore();
+  }
+
+  requestAnimationFrame(animateBracelet);
+}
+
+function tieBand(){
+ if(fsTied) return;
+ fsTied=true;
+ fsStartTime=performance.now();
+ document.getElementById('tieBtn').disabled=true;
+ document.getElementById('tieBtn').textContent='Tied with love  ♥';
+ triggerFsConfetti();
+}
+
+function triggerFsConfetti(){
+ const colors=['#ed6680','#20aa9d','#ffb52e','#f28b55','#9d79c7'];
+ for(let i=0;i<42;i++){
+  const el=document.createElement('i');el.className='fs-confetti';
+  el.style.left=Math.random()*100+'vw';
+  el.style.background=colors[i%colors.length];
+  el.style.setProperty('--drift',(Math.random()*150-75)+'px');
+  el.style.animationDelay=(Math.random()*.8)+'s';
+  document.getElementById('friendshipScene').appendChild(el);setTimeout(()=>el.remove(),3800);
+ }
+}
+
+function previewFriendshipPage(){ document.querySelector('.fs-kicker').textContent='A LITTLE GIFT FOR YOU'; }
+function toggleFsSound(){ const b=document.getElementById('fsSoundBtn'); b.textContent=b.textContent==='🔊'?'🔇':'🔊'; }
+
 function resetApp() {
   stopCustomSong();
   stopBirthdayMusic();
-  if (infiniteFireworksInterval) {
-    clearInterval(infiniteFireworksInterval);
-    infiniteFireworksInterval = null;
-  }
+  stopInfiniteFirecrackers();
   if (recognitionInstance) {
     try { recognitionInstance.stop(); } catch(e){}
   }
@@ -3154,6 +3659,7 @@ function resetApp() {
   knocks = 0;
   opened = false;
   currentVoiceStep = 0;
+  fsTied = false;
 
   if (animRequestId) cancelAnimationFrame(animRequestId);
   ctx.clearRect(0, 0, canvas.width, canvas.width);
@@ -3207,13 +3713,15 @@ function resetApp() {
   const containerText = document.getElementById('letterTextContainer');
   if (containerText) containerText.innerHTML = "";
   document.getElementById('letterFooter').classList.remove('visible');
-  gsap.set("#letterContinueBtn", { opacity: 0, y: 10, pointerEvents: "none" });
+  gsap.set("#letterContinueBtn", { opacity: 0, y: 10, pointerevents: "none" });
 
   gsap.set("#videoScene", { opacity: 0, pointerEvents: "none" });
   gsap.set("#videoWrapperContainer", { y: 220, scale: 0.25, opacity: 0, rotation: 0, x: 0 });
   gsap.set("#videoCardFrame", { scale: 1 });
 
   gsap.set("#endingScene", { opacity: 0, pointerEvents: "none" });
+  gsap.set("#friendshipScene", { opacity: 0, pointerEvents: "none" });
+  gsap.set("#creamExpandTransition", { clipPath: "circle(0% at 50% 50%)" });
 
   document.getElementById('packetPulse').style.display = 'block';
   gsap.set("#packetCrackSvg", { opacity: 0 });
